@@ -2,7 +2,7 @@ import { DafResolver } from 'daf-resolver'
 import * as Daf from 'daf-core'
 import * as DidJwt from 'daf-did-jwt'
 import { IdentityProvider } from 'daf-ethr-did'
-import { KeyManagementSystem } from 'daf-react-native-libsodium'
+import { KeyManagementSystem, SecretBox } from 'daf-react-native-libsodium'
 
 import * as W3c from 'daf-w3c'
 import * as SD from 'daf-selective-disclosure'
@@ -23,7 +23,9 @@ export const dbConnection = createConnection({
   entities: [...Daf.Entities],
 })
 
-const keyStore = new Daf.KeyStore(dbConnection)
+const secretBox = new SecretBox('29739248cad1bd1a0fc4d9b75cd4d2990de535baf5caadfdf8d8f86664aa830c')
+
+const keyStore = new Daf.KeyStore(dbConnection, secretBox)
 const identityStore = new Daf.IdentityStore('rinkeby', dbConnection)
 const kms = new KeyManagementSystem(keyStore)
 const infuraProjectId = '5ffc47f65c4042ce847ef66a3fa70d4c'
